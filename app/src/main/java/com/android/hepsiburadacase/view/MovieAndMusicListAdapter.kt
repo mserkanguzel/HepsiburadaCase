@@ -31,7 +31,7 @@ class MovieAndMusicListAdapter(val movieAndMusicList : ArrayList<MovieAndMusicMo
             else {
                 binding.name.text = movieAndMusicList[position].trackName
             }
-            binding.date.text = dateTimeParsing(movieAndMusicList[position].releaseDate)
+            binding.date.text = movieAndMusicList[position].releaseDate?.let { dateTimeParsing(it) } // letler null gelebilme durumuna karşı alınmış bir önlem
             binding.price.text = movieAndMusicList[position].collectionPrice.toString()
             binding.imageView.downloadImage(movieAndMusicList[position].artworkUrl100, placeHolderBuilder(itemView.context))
             // set on click listener eklenecek
