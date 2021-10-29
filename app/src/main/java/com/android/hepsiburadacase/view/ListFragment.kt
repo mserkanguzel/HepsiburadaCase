@@ -12,10 +12,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.hepsiburadacase.databinding.FragmentListBinding
 import com.android.hepsiburadacase.utils.setBackgroundDefault
+import com.android.hepsiburadacase.viewmodel.AppsViewModel
 import com.android.hepsiburadacase.viewmodel.BooksViewModel
 import com.android.hepsiburadacase.viewmodel.MovieListViewModel
 import com.android.hepsiburadacase.viewmodel.MusicListViewModel
 
+// selectedItem =
+// 0 -> Movies
+// 1 -> Music
+// 2 -> Books
+// 3 -> Apps
 
 class ListFragment : Fragment() {
     private var selectedItem = -1 // ilk girdiğinde hiç bir kategoriye tıklanmamış olsun
@@ -24,8 +30,11 @@ class ListFragment : Fragment() {
     private val movieListViewModel: MovieListViewModel by viewModels()
     private val musicListViewModel: MusicListViewModel by viewModels()
     private val booksViewModel: BooksViewModel by viewModels()
+    private val appsViewModel: AppsViewModel by viewModels()
     private val rcylerViewMovieAndMusic = MovieAndMusicListAdapter(arrayListOf())
     private val rcylerViewBooks = BooksAdapter(arrayListOf())
+    private val rcylerViewApps = AppsAdapter(arrayListOf())
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,9 +63,8 @@ class ListFragment : Fragment() {
                     }
                     return false
                 }
-
             })
-
+            selectedItemCheck()
             btnMusic.setOnClickListener {
                 selectedItem = 1
                 it.setBackgroundColor(Color.RED)
@@ -64,6 +72,8 @@ class ListFragment : Fragment() {
                 btnBooks.setBackgroundDefault()
                 btnApps.setBackgroundDefault()
                 recyclerView.adapter = null
+                searchViewSearch.visibility = View.VISIBLE
+                searchViewSearch.setQuery("", false)
             }
             binding.btnMovies.setOnClickListener {
                 selectedItem = 0
@@ -72,6 +82,8 @@ class ListFragment : Fragment() {
                 btnBooks.setBackgroundDefault()
                 btnApps.setBackgroundDefault()
                 recyclerView.adapter = null
+                searchViewSearch.visibility = View.VISIBLE
+                searchViewSearch.setQuery("", false)
             }
             btnBooks.setOnClickListener {
                 selectedItem = 2
@@ -80,6 +92,9 @@ class ListFragment : Fragment() {
                 btnMovies.setBackgroundDefault()
                 btnApps.setBackgroundDefault()
                 recyclerView.adapter = null
+                searchViewSearch.visibility = View.VISIBLE
+                searchViewSearch.setQuery("", false)
+
             }
             binding.btnApps.setOnClickListener {
                 selectedItem = 3
@@ -88,9 +103,44 @@ class ListFragment : Fragment() {
                 btnMovies.setBackgroundDefault()
                 btnBooks.setBackgroundDefault()
                 recyclerView.adapter = null
+                searchViewSearch.visibility = View.VISIBLE
+                searchViewSearch.setQuery("", false)
+
             }
 
         }
+    }
+
+    // back to detail page for button color..
+    private fun selectedItemCheck() {
+        binding.apply {
+            when (selectedItem) {
+                0 -> {
+                    btnMovies.setBackgroundColor(Color.RED)
+                    searchViewSearch.visibility = View.VISIBLE
+                }
+                1 -> {
+                    btnMusic.setBackgroundColor(Color.RED)
+                    searchViewSearch.visibility = View.VISIBLE
+                }
+                2 -> {
+                    btnBooks.setBackgroundColor(Color.RED)
+                    searchViewSearch.visibility = View.VISIBLE
+                }
+                3 -> {
+                    btnApps.setBackgroundColor(Color.RED)
+                    searchViewSearch.visibility = View.VISIBLE
+                }
+                else -> {
+                    searchViewSearch.visibility = View.GONE
+                    btnMovies.setBackgroundDefault()
+                    btnBooks.setBackgroundDefault()
+                    btnApps.setBackgroundDefault()
+                    btnMusic.setBackgroundDefault()
+                }
+            }
+        }
+
     }
 
     private fun checkList(p0: String) {
@@ -108,11 +158,17 @@ class ListFragment : Fragment() {
             observeMovieLiveData()
             binding.recyclerView.adapter = rcylerViewMovieAndMusic
         }
-        if(selectedItem == 2 && p0.length >= 2) {
-            booksViewModel.refreshData(p0,"audiobook")
+        if (selectedItem == 2 && p0.length >= 2) {
+            booksViewModel.refreshData(p0, "audiobook")
             observeBooksLiveData()
             binding.recyclerView.adapter = rcylerViewBooks
         }
+        if (selectedItem == 3 && p0.length >= 2) {
+            appsViewModel.refreshData(p0, "software")
+            observeAppsLiveData()
+            binding.recyclerView.adapter = rcylerViewApps
+        }
+
 
         if (p0.length < 2) {
             binding.recyclerView.adapter = null
@@ -120,6 +176,13 @@ class ListFragment : Fragment() {
 
     }
 
+    private fun observeAppsLiveData() {
+        appsViewModel.apps.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                it.appsModelResults?.let { it1 -> rcylerViewApps.updateAppsList(it1) }
+            }
+        })
+    }
 
     private fun observeBooksLiveData() {
         booksViewModel.books.observe(viewLifecycleOwner, Observer {

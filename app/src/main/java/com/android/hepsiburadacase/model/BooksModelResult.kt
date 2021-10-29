@@ -1,5 +1,10 @@
 package com.android.hepsiburadacase.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+
 data class BooksModelResult(
     val amgArtistId: Int?,
     val artistId: Int?,
@@ -22,4 +27,4 @@ data class BooksModelResult(
     val releaseDate: String?,
     val trackCount: Int?,
     val wrapperType: String?
-)
+) : Parcelable

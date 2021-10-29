@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.android.hepsiburadacase.R
 import com.android.hepsiburadacase.databinding.ItemListBinding
@@ -35,6 +36,10 @@ class MovieAndMusicListAdapter(val movieAndMusicList : ArrayList<MovieAndMusicMo
             binding.price.text = movieAndMusicList[position].collectionPrice.toString()
             binding.imageView.downloadImage(movieAndMusicList[position].artworkUrl100, placeHolderBuilder(itemView.context))
             // set on click listener eklenecek
+            itemView.setOnClickListener {
+              val action = ListFragmentDirections.actionListFragmentToDetailFragment(movieAndMusicList[position],apps = null,books = null)
+                Navigation.findNavController(it).navigate(action)
+            }
         }
     }
 

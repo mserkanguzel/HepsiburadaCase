@@ -34,3 +34,4 @@ fun dateTimeParsing(date : String) : String {
 fun Button.setBackgroundDefault() {
     setBackgroundColor(Color.parseColor("#FF6200EE"))
 }
+

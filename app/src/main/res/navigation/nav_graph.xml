@@ -19,5 +19,17 @@
         <action
             android:id="@+id/action_detailFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <argument
+            android:name="moviesAndMusicc"
+            app:argType="com.android.hepsiburadacase.model.MovieAndMusicModelResult"
+            app:nullable="true" />
+        <argument
+            android:name="books"
+            app:argType="com.android.hepsiburadacase.model.BooksModelResult"
+            app:nullable="true" />
+        <argument
+            android:name="apps"
+            app:argType="com.android.hepsiburadacase.model.AppsModelResult"
+            app:nullable="true" />
     </fragment>
 </navigation>

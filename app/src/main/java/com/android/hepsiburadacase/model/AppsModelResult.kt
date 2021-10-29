@@ -1,8 +1,12 @@
 package com.android.hepsiburadacase.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class AppsModelResult(
     val advisories: List<String>?,
-    val appletvScreenshotUrls: List<Any>?,
+    val appletvScreenshotUrls: List<String>?,
     val artistId: Int?,
     val artistName: String?,
     val artistViewUrl: String?,
@@ -45,4 +49,4 @@ data class AppsModelResult(
     val userRatingCountForCurrentVersion: Int?,
     val version: String?,
     val wrapperType: String?
-)
+) : Parcelable

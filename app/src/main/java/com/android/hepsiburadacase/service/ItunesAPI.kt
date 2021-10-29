@@ -1,5 +1,6 @@
 package com.android.hepsiburadacase.service
 
+import com.android.hepsiburadacase.model.AppsModel
 import com.android.hepsiburadacase.model.BooksModel
 import com.android.hepsiburadacase.model.MovieAndMusicModel
 import io.reactivex.Observable
@@ -28,4 +29,10 @@ interface ItunesAPI {
         @Query("term") string : String,
         @Query("entity") entity: String
             ) : Single<BooksModel>
+    @GET("/search")
+    fun getApps(
+        @Query("term") string : String,
+        @Query("entity") entity: String
+        ) : Single<AppsModel>
+
 }

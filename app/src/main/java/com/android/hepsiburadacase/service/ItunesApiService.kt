@@ -1,5 +1,6 @@
 package com.android.hepsiburadacase.service
 
+import com.android.hepsiburadacase.model.AppsModel
 import com.android.hepsiburadacase.model.BooksModel
 import com.android.hepsiburadacase.model.MovieAndMusicModel
 import io.reactivex.Observable
@@ -29,5 +30,9 @@ class ItunesApiService {
     fun getBooksData(string:String, entity: String) : Single<BooksModel> {
         return api.getBooks(string,entity)
     }
+    fun getAppsData(string: String,entity: String) : Single<AppsModel> {
+        return api.getApps(string,entity)
+    }
+
 
 }

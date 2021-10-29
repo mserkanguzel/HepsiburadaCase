@@ -1,5 +1,9 @@
 package com.android.hepsiburadacase.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class MovieAndMusicModelResult(
     val artistName: String?,
     val artworkUrl100: String?,
@@ -37,4 +41,4 @@ data class MovieAndMusicModelResult(
     val trackTimeMillis: Int?,
     val trackViewUrl: String?,
     val wrapperType: String?
-)
+) : Parcelable

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.android.hepsiburadacase.R
 import com.android.hepsiburadacase.databinding.ItemListBinding
@@ -29,6 +30,10 @@ class BooksAdapter(val booksList : ArrayList<BooksModelResult>) : RecyclerView.A
             binding.date.text = booksList[position].releaseDate?.let { dateTimeParsing(it) }
             binding.price.text = booksList[position].collectionPrice.toString()
             binding.imageView.downloadImage(booksList[position].artworkUrl100, placeHolderBuilder(itemView.context))
+            itemView.setOnClickListener {
+                val action = ListFragmentDirections.actionListFragmentToDetailFragment(moviesAndMusicc = null, apps = null,books = booksList[position])
+                Navigation.findNavController(it).navigate(action)
+            }
             // set on click listener eklenecek
         }
     }
