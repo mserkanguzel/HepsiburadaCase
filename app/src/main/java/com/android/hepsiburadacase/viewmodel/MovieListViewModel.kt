@@ -13,14 +13,14 @@ class MovieListViewModel : ViewModel() {
     val movie = MutableLiveData<MovieAndMusicModel>()
     private val itunesApiService = ItunesApiService()
     private val disposable = CompositeDisposable()
-    fun refreshData(string: String, entity: String) {
-        getData(string, entity)
+    fun refreshData(string: String, entity: String,limit : String) {
+        getData(string, entity,limit)
     }
 
-    private fun getData(string: String, entity: String) {
+    private fun getData(string: String, entity: String,limit : String) {
 
         disposable.add(
-            itunesApiService.getMovieData(string, entity)
+            itunesApiService.getMovieData(string, entity,limit)
                 .subscribeOn(Schedulers.newThread()) // async bir biçimde single objesine kayıt oluyoruz, arka plandaki thredi gösteriyoruz
                 .observeOn(AndroidSchedulers.mainThread())// observe kullanıcıya gösterilecek yerde yapılıyor
                 .subscribeWith(object : DisposableSingleObserver<MovieAndMusicModel>() {

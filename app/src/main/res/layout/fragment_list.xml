@@ -15,7 +15,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:background="@drawable/linear_bg"
-            android:queryHint="search food"
+            android:queryHint="search..."
             android:textAlignment="center"
             android:transitionName="transitionSearch"
             app:layout_constraintEnd_toEndOf="parent"
@@ -86,6 +86,15 @@
 
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+            app:layout_constraintEnd_toEndOf="@+id/recyclerView"
+            app:layout_constraintStart_toStartOf="@+id/recyclerView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,4 @@
 package com.android.hepsiburadacase.view
-
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,12 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.hepsiburadacase.databinding.FragmentListBinding
 import com.android.hepsiburadacase.utils.setBackgroundDefault
 import com.android.hepsiburadacase.viewmodel.AppsViewModel
 import com.android.hepsiburadacase.viewmodel.BooksViewModel
 import com.android.hepsiburadacase.viewmodel.MovieListViewModel
 import com.android.hepsiburadacase.viewmodel.MusicListViewModel
+
 
 // selectedItem =
 // 0 -> Movies
@@ -24,6 +25,8 @@ import com.android.hepsiburadacase.viewmodel.MusicListViewModel
 // 3 -> Apps
 
 class ListFragment : Fragment() {
+    var limit = 20
+    var string = ""
     private var selectedItem = -1 // ilk girdiğinde hiç bir kategoriye tıklanmamış olsun
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
@@ -34,6 +37,7 @@ class ListFragment : Fragment() {
     private val rcylerViewMovieAndMusic = MovieAndMusicListAdapter(arrayListOf())
     private val rcylerViewBooks = BooksAdapter(arrayListOf())
     private val rcylerViewApps = AppsAdapter(arrayListOf())
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +50,17 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(!binding.recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE){
+                   addLoadMore()
+                }
+            }
 
+        })
         binding.apply {
+            progressBar.visibility = View.GONE
             recyclerView.layoutManager = GridLayoutManager(context, 2)
             searchViewSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -58,7 +71,9 @@ class ListFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(p0: String?): Boolean {
+
                     p0?.let {
+                        string = p0
                         checkList(it)
                     }
                     return false
@@ -107,7 +122,28 @@ class ListFragment : Fragment() {
                 searchViewSearch.setQuery("", false)
 
             }
-
+        }
+    }
+    // selectedItem =
+// 0 -> Movies
+// 1 -> Music
+// 2 -> Books
+// 3 -> Apps
+    private fun addLoadMore() {
+        limit+=20
+        when (selectedItem) {
+            1 -> {
+                musicListViewModel.refreshData(string, "musicTrack",limit.toString())
+            }
+            0 -> {
+                movieListViewModel.refreshData(string,"movie",limit.toString())
+            }
+            3 -> {
+                appsViewModel.refreshData(string,"software",limit.toString())
+            }
+            2 -> {
+                booksViewModel.refreshData(string,"audiobook",limit.toString())
+            }
         }
     }
 
@@ -143,28 +179,35 @@ class ListFragment : Fragment() {
 
     }
 
+
+
     private fun checkList(p0: String) {
 
 
         if (selectedItem == 1 && p0.length >= 2) {
-
-            musicListViewModel.refreshData(p0, "musicTrack")
+            limit = 20
+            musicListViewModel.refreshData(p0, "musicTrack",limit.toString())
             observeMusicLiveData()
+
             binding.recyclerView.adapter = rcylerViewMovieAndMusic
+
         }
 
         if (selectedItem == 0 && p0.length >= 2) {
-            movieListViewModel.refreshData(p0, "movie")
+            limit = 20
+            movieListViewModel.refreshData(p0, "movie",limit.toString())
             observeMovieLiveData()
             binding.recyclerView.adapter = rcylerViewMovieAndMusic
         }
         if (selectedItem == 2 && p0.length >= 2) {
-            booksViewModel.refreshData(p0, "audiobook")
+            limit = 20
+            booksViewModel.refreshData(p0, "audiobook",limit.toString())
             observeBooksLiveData()
             binding.recyclerView.adapter = rcylerViewBooks
         }
         if (selectedItem == 3 && p0.length >= 2) {
-            appsViewModel.refreshData(p0, "software")
+            limit = 20
+            appsViewModel.refreshData(p0, "software",limit.toString())
             observeAppsLiveData()
             binding.recyclerView.adapter = rcylerViewApps
         }
@@ -173,13 +216,13 @@ class ListFragment : Fragment() {
         if (p0.length < 2) {
             binding.recyclerView.adapter = null
         }
-
     }
 
     private fun observeAppsLiveData() {
         appsViewModel.apps.observe(viewLifecycleOwner, Observer {
             it?.let {
-                it.appsModelResults?.let { it1 -> rcylerViewApps.updateAppsList(it1) }
+                it.appsModelResults?.let { it1 ->
+                    rcylerViewApps.updateAppsList(it1) }
             }
         })
     }
@@ -187,7 +230,9 @@ class ListFragment : Fragment() {
     private fun observeBooksLiveData() {
         booksViewModel.books.observe(viewLifecycleOwner, Observer {
             it?.let {
-                it.booksModelResults?.let { it1 -> rcylerViewBooks.updateBooksList(it1) }
+                it.booksModelResults?.let { it1 ->
+                    rcylerViewBooks.updateBooksList(it1)
+                }
             }
         })
     }

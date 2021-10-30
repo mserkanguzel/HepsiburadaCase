@@ -16,13 +16,13 @@ class AppsViewModel : ViewModel() {
     val apps = MutableLiveData<AppsModel>()
     private val itunesApiService = ItunesApiService()
     private val disposable = CompositeDisposable()
-    fun refreshData(string: String, entity: String) {
-        getData(string, entity)
+    fun refreshData(string: String, entity: String,limit : String) {
+        getData(string, entity,limit)
     }
-    private fun getData(string: String, entity: String) {
+    private fun getData(string: String, entity: String,limit : String) {
 
         disposable.add(
-            itunesApiService.getAppsData(string,entity)
+            itunesApiService.getAppsData(string,entity,limit)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<AppsModel>() {

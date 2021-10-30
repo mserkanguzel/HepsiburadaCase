@@ -14,7 +14,7 @@ import com.android.hepsiburadacase.utils.dateTimeParsing
 import com.android.hepsiburadacase.utils.downloadImage
 import com.android.hepsiburadacase.utils.placeHolderBuilder
 
-class AppsAdapter(val appsList : ArrayList<AppsModelResult>) : RecyclerView.Adapter<AppsAdapter.AppsViewHolder>() {
+class AppsAdapter(private val appsList : ArrayList<AppsModelResult>) : RecyclerView.Adapter<AppsAdapter.AppsViewHolder>() {
     class AppsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ItemListBinding.bind(itemView)
     }

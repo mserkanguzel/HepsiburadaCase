@@ -15,24 +15,28 @@ interface ItunesAPI {
     @GET("/search")
     fun getMovie(
         @Query("term") string: String,
-        @Query("entity") entity: String
+        @Query("entity") entity: String,
+        @Query("limit") limit : String
     ): Single<MovieAndMusicModel>
 
     @GET("/search")
     fun getMusic(
         @Query("term") string: String,
-        @Query("entity") entity: String
+        @Query("entity") entity: String,
+        @Query("limit") limit : String
     ): Single<MovieAndMusicModel>
     @GET("/search")
 
     fun getBooks(
         @Query("term") string : String,
-        @Query("entity") entity: String
+        @Query("entity") entity: String,
+        @Query("limit") limit : String
             ) : Single<BooksModel>
     @GET("/search")
     fun getApps(
         @Query("term") string : String,
-        @Query("entity") entity: String
+        @Query("entity") entity: String,
+        @Query("limit") limit : String
         ) : Single<AppsModel>
 
 }

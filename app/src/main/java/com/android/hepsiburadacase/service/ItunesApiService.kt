@@ -20,18 +20,18 @@ class ItunesApiService {
         .create(ItunesAPI::class.java)
 
 
-    fun getMovieData(string: String, entity: String): Single<MovieAndMusicModel> {
-        return api.getMovie(string, entity)
+    fun getMovieData(string: String, entity: String,limit : String): Single<MovieAndMusicModel> {
+        return api.getMovie(string, entity,limit)
     }
 
-    fun getMusicData(string: String, entity: String): Single<MovieAndMusicModel> {
-        return api.getMusic(string, entity)
+    fun getMusicData(string: String, entity: String,limit :String): Single<MovieAndMusicModel> {
+        return api.getMusic(string, entity,limit)
     }
-    fun getBooksData(string:String, entity: String) : Single<BooksModel> {
-        return api.getBooks(string,entity)
+    fun getBooksData(string: String, entity: String,limit : String) : Single<BooksModel> {
+        return api.getBooks(string,entity,limit)
     }
-    fun getAppsData(string: String,entity: String) : Single<AppsModel> {
-        return api.getApps(string,entity)
+    fun getAppsData(string: String, entity: String,limit : String) : Single<AppsModel> {
+        return api.getApps(string,entity,limit)
     }
 
 
