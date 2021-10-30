@@ -179,11 +179,7 @@ class ListFragment : Fragment() {
 
     }
 
-
-
     private fun checkList(p0: String) {
-
-
         if (selectedItem == 1 && p0.length >= 2) {
             limit = 20
             musicListViewModel.refreshData(p0, "musicTrack",limit.toString())

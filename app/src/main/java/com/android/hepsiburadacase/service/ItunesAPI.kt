@@ -5,6 +5,8 @@ import com.android.hepsiburadacase.model.BooksModel
 import com.android.hepsiburadacase.model.MovieAndMusicModel
 import io.reactivex.Observable
 import io.reactivex.Single
+import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -13,30 +15,30 @@ interface ItunesAPI {
 
     // Ex Url -> https://itunes.apple.com/search?term=jack+johnson&entity=musicVideo
     @GET("/search")
-    fun getMovie(
+   suspend fun getMovie(
         @Query("term") string: String,
         @Query("entity") entity: String,
         @Query("limit") limit : String
-    ): Single<MovieAndMusicModel>
+    ): Response<MovieAndMusicModel>
 
     @GET("/search")
-    fun getMusic(
+    suspend fun getMusic(
         @Query("term") string: String,
         @Query("entity") entity: String,
         @Query("limit") limit : String
-    ): Single<MovieAndMusicModel>
+    ): Response<MovieAndMusicModel>
     @GET("/search")
 
-    fun getBooks(
+    suspend fun getBooks(
         @Query("term") string : String,
         @Query("entity") entity: String,
         @Query("limit") limit : String
-            ) : Single<BooksModel>
+            ) : Response<BooksModel>
     @GET("/search")
-    fun getApps(
+    suspend fun getApps(
         @Query("term") string : String,
         @Query("entity") entity: String,
         @Query("limit") limit : String
-        ) : Single<AppsModel>
+        ) : Response<AppsModel>
 
 }
