@@ -1,10 +1,8 @@
 # Hepsiburada Mobil Android Bootcamp Final Project
 
-## Tasks:
+## Tasks: Receiving, processing and searching data from the web service
 
-# Receiving, processing and searching data from the web service
-
-# Key features
+## Key features
  
  * ✔ MVVM
  * ✔ Retrofit
