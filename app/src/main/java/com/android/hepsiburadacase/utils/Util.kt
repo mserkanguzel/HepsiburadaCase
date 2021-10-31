@@ -10,18 +10,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 fun ImageView.downloadImage(url: String?, placeholder: CircularProgressDrawable) {
-    val options = RequestOptions().placeholder(placeholder).error(R.mipmap.ic_launcher_round) // glideddaki seçenekler
+    val options = RequestOptions().placeholder(placeholder)
+        .error(R.mipmap.ic_launcher_round) // glideddaki seçenekler
     Glide.with(context).setDefaultRequestOptions(options).load(url).into(this)
 }
 
-fun placeHolderBuilder(context: Context) : CircularProgressDrawable {
+fun placeHolderBuilder(context: Context): CircularProgressDrawable {
     return CircularProgressDrawable(context).apply {
         strokeWidth = 8f
         centerRadius = 40f
         start()
     }
 }
-fun dateTimeParsing(date : String) : String {
+
+fun dateTimeParsing(date: String): String {
     val fullDateTime = date.split("T")
     val dayMonthYear = fullDateTime[0]
     val lastSplit = dayMonthYear.split('-')
@@ -32,6 +34,6 @@ fun dateTimeParsing(date : String) : String {
 }
 
 fun Button.setBackgroundDefault() {
-    setBackgroundColor(Color.parseColor("#FF6200EE"))
+    setBackgroundColor(Color.parseColor("#8899ac"))
 }
 

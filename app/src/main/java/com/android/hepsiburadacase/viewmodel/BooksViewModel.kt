@@ -4,12 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.hepsiburadacase.model.BooksModel
-import com.android.hepsiburadacase.model.MovieAndMusicModel
 import com.android.hepsiburadacase.service.ItunesApiService
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 
 class BooksViewModel : ViewModel() {

@@ -1,10 +1,12 @@
 package com.android.hepsiburadacase.view
 
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.android.hepsiburadacase.databinding.FragmentDetailBinding
 import com.android.hepsiburadacase.model.AppsModelResult
@@ -19,9 +21,9 @@ import com.android.hepsiburadacase.utils.placeHolderBuilder
 class DetailFragment : Fragment() {
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
-        private var movieOrMusic : MovieAndMusicModelResult? = null
-        private var books : BooksModelResult? = null
-        private var apps : AppsModelResult? = null
+    private var movieOrMusic: MovieAndMusicModelResult? = null
+    private var books: BooksModelResult? = null
+    private var apps: AppsModelResult? = null
 
     private val args: DetailFragmentArgs by navArgs()
 
@@ -29,7 +31,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDetailBinding.inflate(inflater,container,false)
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
 
         // Inflate the layout for this fragment
         return binding.root
@@ -48,42 +50,63 @@ class DetailFragment : Fragment() {
         // wrapperType = "audiobook" -> book
 
         binding.apply {
+            backArrowButton.setOnClickListener {
+                findNavController().popBackStack()
+            }
             // if(movieOrMusic?.kind == "song") bu şekilde movie veya music ayrimi yapilabilir- feature-movie-> movie
-         // movie yada müzik geldi
-            if(books == null && apps == null) {
-                if(movieOrMusic?.collectionName != null) {
-                    textViewName.text = movieOrMusic?.collectionName
+            // movie yada müzik geldi
+            if (movieOrMusic != null) {
+                if (movieOrMusic?.kind == "feature-movie") {
+                    if (movieOrMusic?.collectionName != null) {
+                        textViewName.text = movieOrMusic?.collectionName
+                    } else {
+                        textViewName.text = movieOrMusic?.trackName
+                    }
+                    textViewDescList.text = movieOrMusic?.longDescription
+                    textViewPrice.text = movieOrMusic?.collectionPrice.toString()
+                    imageViewDetail.downloadImage(
+                        movieOrMusic?.artworkUrl100,
+                        placeHolderBuilder(requireContext())
+                    )
                 }
-                else {
-                    textViewName.text = movieOrMusic?.trackName
+                if (movieOrMusic?.kind == "song") {
+                    textViewName.text = movieOrMusic?.artistName
+                    textViewDescList.text = movieOrMusic?.collectionName
+                    textViewPrice.text = movieOrMusic?.collectionPrice.toString()
+                    imageViewDetail.downloadImage(
+                        movieOrMusic?.artworkUrl100,
+                        placeHolderBuilder(requireContext())
+                    )
                 }
-                textViewDescList.text = movieOrMusic?.longDescription
-                textViewPrice.text = movieOrMusic?.collectionPrice.toString()
-                imageViewDetail.downloadImage(movieOrMusic?.artworkUrl100, placeHolderBuilder(requireContext()))
             }
             // books geldi
-            if(movieOrMusic == null && apps == null) {
-              if(books?.collectionName != null){
-                  textViewName.text = books?.collectionName
-              }
-                else{
-                  textViewName.text = books?.artistName
+            if (books != null) {
+                if (books?.collectionName != null) {
+                    textViewName.text = books?.collectionName
+                } else {
+                    textViewName.text = books?.artistName
                 }
-                  textViewDescList.text = books?.description
+                val readableDesc = Html.fromHtml(books?.description)
+                textViewDescList.text = readableDesc
                 textViewPrice.text = books?.collectionPrice.toString()
-                imageViewDetail.downloadImage(books?.artworkUrl100, placeHolderBuilder(requireContext()))
+                imageViewDetail.downloadImage(
+                    books?.artworkUrl100,
+                    placeHolderBuilder(requireContext())
+                )
             }
             // apps geldi
-            if(movieOrMusic == null && books == null) {
-                if(apps?.trackName != null) {
+            if (apps != null) {
+                if (apps?.trackName != null) {
                     textViewName.text = apps?.trackName
-                }
-                else {
+                } else {
                     textViewName.text = apps?.sellerName
                 }
                 textViewDescList.text = apps?.description
                 textViewPrice.text = apps?.formattedPrice
-                imageViewDetail.downloadImage(apps?.artworkUrl100, placeHolderBuilder(requireContext()))
+                imageViewDetail.downloadImage(
+                    apps?.artworkUrl100,
+                    placeHolderBuilder(requireContext())
+                )
             }
 
         }

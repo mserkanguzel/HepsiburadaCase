@@ -5,12 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.hepsiburadacase.model.MovieAndMusicModel
 import com.android.hepsiburadacase.service.ItunesApiService
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 
-class MusicListViewModel: ViewModel() {
+class MusicListViewModel : ViewModel() {
     val music = MutableLiveData<MovieAndMusicModel>()
     private val itunesApiService = ItunesApiService()
     fun refreshData(string: String, entity: String, limit: String) {

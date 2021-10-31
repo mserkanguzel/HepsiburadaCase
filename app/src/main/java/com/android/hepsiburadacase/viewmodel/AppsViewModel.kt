@@ -4,23 +4,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.hepsiburadacase.model.AppsModel
-import com.android.hepsiburadacase.model.BooksModel
-import com.android.hepsiburadacase.model.MovieAndMusicModel
 import com.android.hepsiburadacase.service.ItunesApiService
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 
 class AppsViewModel : ViewModel() {
     val apps = MutableLiveData<AppsModel>()
     private val itunesApiService = ItunesApiService()
-    fun refreshData(string: String, entity: String,limit : String) {
-        getData(string, entity,limit)
+    fun refreshData(string: String, entity: String, limit: String) {
+        getData(string, entity, limit)
     }
 
-    private fun  getData(string: String, entity: String,limit : String) {
+    private fun getData(string: String, entity: String, limit: String) {
         viewModelScope.launch {
             val response = itunesApiService.getAppsData(string, entity, limit)
             if (response.isSuccessful) {

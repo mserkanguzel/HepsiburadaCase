@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
 
@@ -8,69 +8,84 @@
         android:layout_width="150dp"
         android:layout_height="250dp"
         android:layout_margin="10dp"
+        app:cardBackgroundColor="#243447"
         app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        >
+        app:cardElevation="8dp">
 
-     <androidx.constraintlayout.widget.ConstraintLayout
-         android:layout_width="match_parent"
-         android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-         <ImageView
-             android:id="@+id/imageView"
-             android:layout_width="100dp"
-             android:layout_height="100dp"
-             android:layout_margin="5dp"
-             android:contentDescription="TODO"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
-             app:srcCompat="@drawable/ic_launcher_background">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="5dp"
+                android:contentDescription="TODO"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_launcher_background">
 
-         </ImageView>
+            </ImageView>
 
-         <TextView
-             android:id="@+id/name"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginTop="12dp"
-             android:textSize="15sp"
-             android:ellipsize="end"
-             android:gravity="center"
-             android:maxLines="2"
-             android:textStyle="bold"
-             app:layout_constraintEnd_toEndOf="@+id/imageView"
-             app:layout_constraintStart_toStartOf="@+id/imageView"
-             app:layout_constraintTop_toBottomOf="@+id/imageView"
-             tools:text="name">
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:maxLines="2"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                tools:text="name">
 
-         </TextView>
+            </TextView>
 
-         <TextView
-             android:id="@+id/date"
-             android:layout_height="wrap_content"
-             android:layout_marginBottom="24dp"
-             android:layout_width="wrap_content"
-             android:gravity="center"
-             android:textSize="15sp"
-             app:layout_constraintBottom_toTopOf="@+id/price"
-             app:layout_constraintEnd_toEndOf="@+id/name"
-             app:layout_constraintStart_toStartOf="@+id/name"
-             tools:text="date" />
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/price"
+                app:layout_constraintEnd_toEndOf="@+id/name"
+                app:layout_constraintStart_toStartOf="@+id/name"
+                tools:text="date" />
 
-         <TextView
-             android:id="@+id/price"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginBottom="16dp"
-             android:textSize="15sp"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintStart_toStartOf="parent"
-             tools:text="9.99">
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/date"
+                app:layout_constraintStart_toStartOf="@+id/date"
+                tools:text="9.99">
 
-         </TextView>
-     </androidx.constraintlayout.widget.ConstraintLayout>
+            </TextView>
+
+            <ImageView
+                android:id="@+id/dollarIcon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                app:layout_constraintBottom_toBottomOf="@+id/price"
+                app:layout_constraintStart_toEndOf="@+id/price"
+                app:layout_constraintTop_toTopOf="@+id/price"
+                app:srcCompat="@drawable/ic_dollar_icon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.cardview.widget.CardView>

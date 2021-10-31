@@ -1,4 +1,5 @@
 package com.android.hepsiburadacase.view
+
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +29,8 @@ import com.android.hepsiburadacase.viewmodel.MusicListViewModel
 class ListFragment : Fragment() {
     var limit = 20
     var string = ""
-    private var selectedItem = -1 // ilk girdiğinde hiç bir kategoriye tıklanmamış olsun
+    private var selectedItem =
+        MutableLiveData<Int>() // ilk girdiğinde hiç bir kategoriye tıklanmamış olsun
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
     private val movieListViewModel: MovieListViewModel by viewModels()
@@ -50,17 +53,19 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if(!binding.recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE){
-                   addLoadMore()
+                if (!binding.recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    addLoadMore()
                 }
             }
 
         })
         binding.apply {
-            progressBar.visibility = View.GONE
+            searchViewSearch.visibility = View.GONE
+            firstMakeButtonColor()
             recyclerView.layoutManager = GridLayoutManager(context, 2)
             searchViewSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -79,137 +84,147 @@ class ListFragment : Fragment() {
                     return false
                 }
             })
-            selectedItemCheck()
-            btnMusic.setOnClickListener {
-                selectedItem = 1
-                it.setBackgroundColor(Color.RED)
-                btnMovies.setBackgroundDefault()
-                btnBooks.setBackgroundDefault()
-                btnApps.setBackgroundDefault()
-                recyclerView.adapter = null
-                searchViewSearch.visibility = View.VISIBLE
-                searchViewSearch.setQuery("", false)
-            }
+            buttonColorForSelectedItem()
             binding.btnMovies.setOnClickListener {
-                selectedItem = 0
-                it.setBackgroundColor(Color.RED)
-                btnMusic.setBackgroundDefault()
-                btnBooks.setBackgroundDefault()
-                btnApps.setBackgroundDefault()
-                recyclerView.adapter = null
-                searchViewSearch.visibility = View.VISIBLE
-                searchViewSearch.setQuery("", false)
+                selectedItem.value = 0
+                btnClick()// SUBMIT TRUE, QUERY KENDİSİ
+            }
+            btnMusic.setOnClickListener {
+                selectedItem.value = 1
+                btnClick()
             }
             btnBooks.setOnClickListener {
-                selectedItem = 2
-                it.setBackgroundColor(Color.RED)
-                btnMusic.setBackgroundDefault()
-                btnMovies.setBackgroundDefault()
-                btnApps.setBackgroundDefault()
-                recyclerView.adapter = null
-                searchViewSearch.visibility = View.VISIBLE
-                searchViewSearch.setQuery("", false)
+                selectedItem.value = 2
+                btnClick()
 
             }
             binding.btnApps.setOnClickListener {
-                selectedItem = 3
-                it.setBackgroundColor(Color.RED)
-                btnMusic.setBackgroundDefault()
-                btnMovies.setBackgroundDefault()
-                btnBooks.setBackgroundDefault()
-                recyclerView.adapter = null
-                searchViewSearch.visibility = View.VISIBLE
-                searchViewSearch.setQuery("", false)
+                selectedItem.value = 3
+                btnClick()
 
             }
         }
     }
+
     // selectedItem =
 // 0 -> Movies
 // 1 -> Music
 // 2 -> Books
 // 3 -> Apps
+    private fun btnClick() {
+        binding.apply {
+            searchViewSearch.visibility = View.VISIBLE
+            searchViewSearch.setQuery(searchViewSearch.query, true)
+        }
+
+    }
+
+
     private fun addLoadMore() {
-        limit+=20
-        when (selectedItem) {
+        limit += 20
+        when (selectedItem.value) {
             1 -> {
-                musicListViewModel.refreshData(string, "musicTrack",limit.toString())
+                musicListViewModel.refreshData(string, "musicTrack", limit.toString())
             }
             0 -> {
-                movieListViewModel.refreshData(string,"movie",limit.toString())
+                movieListViewModel.refreshData(string, "movie", limit.toString())
             }
             3 -> {
-                appsViewModel.refreshData(string,"software",limit.toString())
+                appsViewModel.refreshData(string, "software", limit.toString())
             }
             2 -> {
-                booksViewModel.refreshData(string,"audiobook",limit.toString())
+                booksViewModel.refreshData(string, "audiobook", limit.toString())
             }
         }
     }
 
-    // back to detail page for button color..
-    private fun selectedItemCheck() {
+    // for button color..
+    private fun buttonColorForSelectedItem() {
         binding.apply {
-            when (selectedItem) {
-                0 -> {
-                    btnMovies.setBackgroundColor(Color.RED)
-                    searchViewSearch.visibility = View.VISIBLE
+            selectedItem.observe(viewLifecycleOwner, Observer {
+                when (selectedItem.value) {
+                    0 -> {
+                        btnMovies.setBackgroundColor(Color.parseColor("#141d26"))
+                        searchViewSearch.visibility = View.VISIBLE
+                        btnMusic.setBackgroundDefault()
+                        btnApps.setBackgroundDefault()
+                        btnBooks.setBackgroundDefault()
+                    }
+                    1 -> {
+                        btnMusic.setBackgroundColor(Color.parseColor("#141d26"))
+                        searchViewSearch.visibility = View.VISIBLE
+                        btnApps.setBackgroundDefault()
+                        btnMovies.setBackgroundDefault()
+                        btnBooks.setBackgroundDefault()
+                    }
+                    2 -> {
+                        btnBooks.setBackgroundColor(Color.parseColor("#141d26"))
+                        searchViewSearch.visibility = View.VISIBLE
+                        btnMusic.setBackgroundDefault()
+                        btnMovies.setBackgroundDefault()
+                        btnApps.setBackgroundDefault()
+                    }
+                    3 -> {
+                        btnApps.setBackgroundColor(Color.parseColor("#141d26"))
+                        searchViewSearch.visibility = View.VISIBLE
+                        btnMusic.setBackgroundDefault()
+                        btnMovies.setBackgroundDefault()
+                        btnBooks.setBackgroundDefault()
+                    }
+                    else -> {
+                        searchViewSearch.visibility = View.GONE
+                        btnMovies.setBackgroundDefault()
+                        btnBooks.setBackgroundDefault()
+                        btnApps.setBackgroundDefault()
+                        btnMusic.setBackgroundDefault()
+                    }
                 }
-                1 -> {
-                    btnMusic.setBackgroundColor(Color.RED)
-                    searchViewSearch.visibility = View.VISIBLE
-                }
-                2 -> {
-                    btnBooks.setBackgroundColor(Color.RED)
-                    searchViewSearch.visibility = View.VISIBLE
-                }
-                3 -> {
-                    btnApps.setBackgroundColor(Color.RED)
-                    searchViewSearch.visibility = View.VISIBLE
-                }
-                else -> {
-                    searchViewSearch.visibility = View.GONE
-                    btnMovies.setBackgroundDefault()
-                    btnBooks.setBackgroundDefault()
-                    btnApps.setBackgroundDefault()
-                    btnMusic.setBackgroundDefault()
-                }
-            }
+            })
+
+        }
+
+    }
+
+    private fun firstMakeButtonColor() {
+        binding.apply {
+            btnMusic.setBackgroundDefault() // ilk çalışma için
+            btnMovies.setBackgroundDefault()
+            btnBooks.setBackgroundDefault()
+            btnApps.setBackgroundDefault()
         }
 
     }
 
     private fun checkList(p0: String) {
-        if (selectedItem == 1 && p0.length >= 2) {
+        if (p0.length >= 2) {
             limit = 20
-            musicListViewModel.refreshData(p0, "musicTrack",limit.toString())
-            observeMusicLiveData()
+            when (selectedItem.value) {
+                0 -> {
+                    movieListViewModel.refreshData(p0, "movie", limit.toString())
+                    observeMovieLiveData()
+                    binding.recyclerView.adapter = rcylerViewMovieAndMusic
+                }
+                1 -> {
 
-            binding.recyclerView.adapter = rcylerViewMovieAndMusic
+                    musicListViewModel.refreshData(p0, "musicTrack", limit.toString())
+                    observeMusicLiveData()
+                    binding.recyclerView.adapter = rcylerViewMovieAndMusic
+                }
+                2 -> {
 
-        }
+                    booksViewModel.refreshData(p0, "audiobook", limit.toString())
+                    observeBooksLiveData()
+                    binding.recyclerView.adapter = rcylerViewBooks
+                }
+                3 -> {
 
-        if (selectedItem == 0 && p0.length >= 2) {
-            limit = 20
-            movieListViewModel.refreshData(p0, "movie",limit.toString())
-            observeMovieLiveData()
-            binding.recyclerView.adapter = rcylerViewMovieAndMusic
-        }
-        if (selectedItem == 2 && p0.length >= 2) {
-            limit = 20
-            booksViewModel.refreshData(p0, "audiobook",limit.toString())
-            observeBooksLiveData()
-            binding.recyclerView.adapter = rcylerViewBooks
-        }
-        if (selectedItem == 3 && p0.length >= 2) {
-            limit = 20
-            appsViewModel.refreshData(p0, "software",limit.toString())
-            observeAppsLiveData()
-            binding.recyclerView.adapter = rcylerViewApps
-        }
+                    appsViewModel.refreshData(p0, "software", limit.toString())
+                    observeAppsLiveData()
+                    binding.recyclerView.adapter = rcylerViewApps
+                }
+            }
 
-
-        if (p0.length < 2) {
+        } else {
             binding.recyclerView.adapter = null
         }
     }
@@ -218,7 +233,8 @@ class ListFragment : Fragment() {
         appsViewModel.apps.observe(viewLifecycleOwner, Observer {
             it?.let {
                 it.appsModelResults?.let { it1 ->
-                    rcylerViewApps.updateAppsList(it1) }
+                    rcylerViewApps.updateAppsList(it1)
+                }
             }
         })
     }
