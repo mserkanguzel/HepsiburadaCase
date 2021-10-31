@@ -1,6 +1,6 @@
 # Hepsiburada Mobil Android Bootcamp Final Project
 
-## Tasks: Receiving, processing and searching data from the web service
+## Tasks: Receiving, processing and searching data from the Itunes API
 
 ## Key features
  
